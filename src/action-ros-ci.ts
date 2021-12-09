@@ -480,8 +480,35 @@ done`;
 	await execBashCommand("vcs log -l1 src/", undefined, options);
 
 	if (isLinux) {
-		// Always update APT before installing packages on Ubuntu
-		await execBashCommand("sudo apt-get update");
+		// determine if can use sudo
+		let useSudo = true;
+		try {
+			await io.which("sudo", true);
+		} catch (e) {
+			useSudo = false;
+		}
+		// determine if can use apt-get
+		let useApt = true;
+		try {
+			await io.which("apt-get", true);
+		} catch (e) {
+			useApt = false;
+		}
+
+		//update package manager
+		if (useSudo) {
+			if (useApt) {
+				await execBashCommand("sudo apt-get update");
+			} else {
+				await execBashCommand("sudo dnf makecache");
+			}
+		} else {
+			if (useApt) {
+				await execBashCommand("apt-get update");
+			} else {
+				await execBashCommand("dnf makecache");
+			}
+		}
 	}
 	await installRosdeps(
 		buildPackageSelection,

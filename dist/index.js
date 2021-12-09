@@ -11305,8 +11305,39 @@ done`;
         // Print HEAD commits of all repos
         yield execBashCommand("vcs log -l1 src/", undefined, options);
         if (isLinux) {
-            // Always update APT before installing packages on Ubuntu
-            yield execBashCommand("sudo apt-get update");
+            // determine if can use sudo
+            let useSudo = true;
+            try {
+                yield io.which("sudo", true);
+            }
+            catch (e) {
+                useSudo = false;
+            }
+            // determine if can use apt-get
+            let useApt = true;
+            try {
+                yield io.which("apt-get", true);
+            }
+            catch (e) {
+                useApt = false;
+            }
+            //update package manager
+            if (useSudo) {
+                if (useApt) {
+                    yield execBashCommand("sudo apt-get update");
+                }
+                else {
+                    yield execBashCommand("sudo dnf makecache");
+                }
+            }
+            else {
+                if (useApt) {
+                    yield execBashCommand("apt-get update");
+                }
+                else {
+                    yield execBashCommand("dnf makecache");
+                }
+            }
         }
         yield installRosdeps(buildPackageSelection, rosWorkspaceDir, options, targetRos1Distro, targetRos2Distro);
         if (colconDefaults.includes(`"mixin"`) && colconMixinRepo !== "") {
