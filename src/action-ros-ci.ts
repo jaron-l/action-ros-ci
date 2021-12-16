@@ -254,6 +254,9 @@ async function runTests(
 
 async function run_throw(): Promise<void> {
     await execBashCommand(
+        "env"
+    );
+    await execBashCommand(
         "rosdep update"
     );
     await execBashCommand(
