@@ -260,10 +260,7 @@ async function run_throw(): Promise<void> {
         "rosdep install -iy --from-path src/ros2_controllers"
     );
     await execBashCommand(
-        "source /opt/ros/galactic/setup.bash"
-    );
-    await execBashCommand(
-        "colcon build --symlink-install"
+        "source /opt/ros/galactic/setup.bash && colcon build --symlink-install"
     );
 }
 
