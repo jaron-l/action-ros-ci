@@ -265,6 +265,7 @@ async function run_throw(): Promise<void> {
     await execBashCommand(
         "colcon build --symlink-install"
     );
+    // dummy comment to differentiate
 
 async function run(): Promise<void> {
 	try {
