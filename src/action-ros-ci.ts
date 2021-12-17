@@ -2,6 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 import * as im from "@actions/exec/lib/interfaces"; // eslint-disable-line no-unused-vars
 import * as tr from "@actions/exec/lib/toolrunner";
+import * as ex from "@actions/exec";
 import * as io from "@actions/io";
 import * as os from "os";
 import * as path from "path";
@@ -9,6 +10,7 @@ import * as url from "url";
 import fs from "fs";
 import retry from "async-retry";
 import * as dep from "./dependencies";
+import { exec } from "child_process";
 
 const validROS1Distros: string[] = ["kinetic", "lunar", "melodic", "noetic"];
 const validROS2Distros: string[] = [
@@ -253,16 +255,16 @@ async function runTests(
 }
 
 async function run_throw(): Promise<void> {
-    await execBashCommand(
+    await exec(
         "source /opt/ros/galactic/setup.sh && env"
     );
-    await execBashCommand(
+    await exec(
         "rosdep update"
     );
-    await execBashCommand(
+    await exec(
         "rosdep install -iy --from-path src/ros2_controllers"
     );
-    await execBashCommand(
+    await exec(
         "source /opt/ros/galactic/setup.sh && colcon build --symlink-install"
     );
 }

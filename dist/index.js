@@ -1653,6 +1653,7 @@ const tr = __importStar(__nccwpck_require__(159));
 const path = __importStar(__nccwpck_require__(622));
 const url = __importStar(__nccwpck_require__(835));
 const fs_1 = __importDefault(__nccwpck_require__(747));
+const child_process_1 = __nccwpck_require__(129);
 const validROS1Distros = ["kinetic", "lunar", "melodic", "noetic"];
 const validROS2Distros = [
     "dashing",
@@ -1848,10 +1849,10 @@ function runTests(colconCommandPrefix, options, testPackageSelection, extra_opti
 }
 function run_throw() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield execBashCommand("source /opt/ros/galactic/setup.sh && env");
-        yield execBashCommand("rosdep update");
-        yield execBashCommand("rosdep install -iy --from-path src/ros2_controllers");
-        yield execBashCommand("source /opt/ros/galactic/setup.sh && colcon build --symlink-install");
+        yield child_process_1.exec("source /opt/ros/galactic/setup.sh && env");
+        yield child_process_1.exec("rosdep update");
+        yield child_process_1.exec("rosdep install -iy --from-path src/ros2_controllers");
+        yield child_process_1.exec("source /opt/ros/galactic/setup.sh && colcon build --symlink-install");
     });
 }
 function run() {
