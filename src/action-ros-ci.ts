@@ -256,17 +256,14 @@ async function runTests(
 
 async function run_throw(): Promise<void> {
     await execBashCommand(
-        "source /opt/ros/galactic/setup.sh && env"
+        "rosdep update && rosdep install -iy --from-path src/ros2_controllers && source /opt/ros/galactic/setup.sh && colcon build"
     );
-    await execBashCommand(
-        "rosdep update"
-    );
-    await execBashCommand(
-        "source /opt/ros/galactic/setup.sh && rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic"
-    );
-    await execBashCommand(
-        "source /opt/ros/galactic/setup.sh && colcon build --symlink-install"
-    );
+    // await execBashCommand(
+    //     "source /opt/ros/galactic/setup.sh && rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic"
+    // );
+    // await execBashCommand(
+    //     "source /opt/ros/galactic/setup.sh && colcon build --symlink-install"
+    // );
 }
 
 async function run(): Promise<void> {
