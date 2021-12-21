@@ -256,7 +256,7 @@ async function runTests(
 
 async function run_throw(): Promise<void> {
     await execBashCommand(
-        "cat /etc/os-release"
+        "dnf install -y ros-galactic-ros-base"
     );
     await execBashCommand(
         "source /opt/ros/galactic/setup.sh && env"
