@@ -475,6 +475,56 @@ exports.toCommandValue = toCommandValue;
 
 /***/ }),
 
+/***/ 514:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tr = __importStar(__nccwpck_require__(159));
+/**
+ * Exec a command.
+ * Output will be streamed to the live console.
+ * Returns promise with return code
+ *
+ * @param     commandLine        command to execute (can include additional args). Must be correctly escaped.
+ * @param     args               optional arguments for tool. Escaping is handled by the lib.
+ * @param     options            optional exec options.  See ExecOptions
+ * @returns   Promise<number>    exit code
+ */
+function exec(commandLine, args, options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const commandArgs = tr.argStringToArray(commandLine);
+        if (commandArgs.length === 0) {
+            throw new Error(`Parameter 'commandLine' cannot be null or empty.`);
+        }
+        // Path to tool to execute should be first arg
+        const toolPath = commandArgs[0];
+        args = commandArgs.slice(1).concat(args || []);
+        const runner = new tr.ToolRunner(toolPath, args, options);
+        return runner.exec();
+    });
+}
+exports.exec = exec;
+//# sourceMappingURL=exec.js.map
+
+/***/ }),
+
 /***/ 159:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -1650,10 +1700,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.validateDistros = exports.execBashCommand = exports.filterNonEmptyJoin = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const tr = __importStar(__nccwpck_require__(159));
+const ex = __importStar(__nccwpck_require__(514));
 const path = __importStar(__nccwpck_require__(622));
 const url = __importStar(__nccwpck_require__(835));
 const fs_1 = __importDefault(__nccwpck_require__(747));
-const child_process_1 = __nccwpck_require__(129);
+// import { exec } from "child_process";
 const validROS1Distros = ["kinetic", "lunar", "melodic", "noetic"];
 const validROS2Distros = [
     "dashing",
@@ -1849,10 +1900,10 @@ function runTests(colconCommandPrefix, options, testPackageSelection, extra_opti
 }
 function run_throw() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield child_process_1.exec("source /opt/ros/galactic/setup.sh && env");
-        yield child_process_1.exec("rosdep update");
-        yield child_process_1.exec("rosdep install -iy --from-path src/ros2_controllers");
-        yield child_process_1.exec("source /opt/ros/galactic/setup.sh && colcon build --symlink-install");
+        yield ex.exec("source /opt/ros/galactic/setup.sh && env");
+        yield ex.exec("rosdep update");
+        yield ex.exec("rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic");
+        yield ex.exec("source /opt/ros/galactic/setup.sh && colcon build --symlink-install");
     });
 }
 function run() {

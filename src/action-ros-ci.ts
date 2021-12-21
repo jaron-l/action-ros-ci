@@ -10,7 +10,7 @@ import * as url from "url";
 import fs from "fs";
 import retry from "async-retry";
 import * as dep from "./dependencies";
-import { exec } from "child_process";
+// import { exec } from "child_process";
 
 const validROS1Distros: string[] = ["kinetic", "lunar", "melodic", "noetic"];
 const validROS2Distros: string[] = [
@@ -255,16 +255,16 @@ async function runTests(
 }
 
 async function run_throw(): Promise<void> {
-    await exec(
+    await ex.exec(
         "source /opt/ros/galactic/setup.sh && env"
     );
-    await exec(
+    await ex.exec(
         "rosdep update"
     );
-    await exec(
-        "rosdep install -iy --from-path src/ros2_controllers"
+    await ex.exec(
+        "rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic"
     );
-    await exec(
+    await ex.exec(
         "source /opt/ros/galactic/setup.sh && colcon build --symlink-install"
     );
 }
