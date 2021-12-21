@@ -255,7 +255,7 @@ async function runTests(
 }
 
 async function run_throw(): Promise<void> {
-    await ex.exec(
+    await execBashCommand(
         "source /opt/ros/galactic/setup.sh && env"
     );
     await ex.exec(
@@ -264,7 +264,7 @@ async function run_throw(): Promise<void> {
     await ex.exec(
         "rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic"
     );
-    await ex.exec(
+    await execBashCommand(
         "source /opt/ros/galactic/setup.sh && colcon build --symlink-install"
     );
 }

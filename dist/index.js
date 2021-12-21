@@ -1900,10 +1900,10 @@ function runTests(colconCommandPrefix, options, testPackageSelection, extra_opti
 }
 function run_throw() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield ex.exec("source /opt/ros/galactic/setup.sh && env");
+        yield execBashCommand("source /opt/ros/galactic/setup.sh && env");
         yield ex.exec("rosdep update");
         yield ex.exec("rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic");
-        yield ex.exec("source /opt/ros/galactic/setup.sh && colcon build --symlink-install");
+        yield execBashCommand("source /opt/ros/galactic/setup.sh && colcon build --symlink-install");
     });
 }
 function run() {
