@@ -256,6 +256,9 @@ async function runTests(
 
 async function run_throw(): Promise<void> {
     await execBashCommand(
+        "cat /etc/os-release"
+    );
+    await execBashCommand(
         "source /opt/ros/galactic/setup.sh && env"
     );
     await ex.exec(
