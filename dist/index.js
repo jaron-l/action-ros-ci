@@ -1849,13 +1849,9 @@ function runTests(colconCommandPrefix, options, testPackageSelection, extra_opti
 }
 function run_throw() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield execBashCommand("rosdep update && rosdep install -iy --from-path src/ros2_controllers && source /opt/ros/galactic/setup.sh && colcon build");
-        // await execBashCommand(
-        //     "source /opt/ros/galactic/setup.sh && rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic"
-        // );
-        // await execBashCommand(
-        //     "source /opt/ros/galactic/setup.sh && colcon build --symlink-install"
-        // );
+        yield execBashCommand("rosdep update");
+        yield execBashCommand("rosdep install -iy --from-path src/ros2_controllers --rosdistro galactic");
+        yield execBashCommand("source /opt/ros/galactic/setup.sh && RMW_IMPLEMENTATION=rmw_connextdds colcon build --symlink-install");
     });
 }
 function run() {
